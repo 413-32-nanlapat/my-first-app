@@ -43,14 +43,42 @@ def show_result_dialog(ans1, ans2):
         st.error(f"❌ ข้อ 2: ยังไม่ถูกต้อง (คุณตอบ '{u_ans2}')")
 
     # ✏️ [พื้นที่สำหรับนักเรียน]: เพิ่มตรวจข้อ 3, 4 ตรงนี้
+if "ans3_val" not in st.session_state:
+    st.session_state.ans3_val = ""
+if "ans4_val" not in st.session_state:
+    st.session_state.ans4_val = ""
 
+ st.session_state.ans3_val = ""  # เคลียร์ค่าช่องข้อ 3
+    st.session_state.ans4_val = ""  # เคลียร์ค่าช่องข้อ 4 
+    st.session_state.start = time.time()  # เริ่มเวลาใหม่
+    st.session_state.is_ended = False  # ปิด Dialog
+
+def show_result_dialog(ans3, ans4):
+    st.balloons()
+    score = 0
+
+    u_ans3 = ans3.strip().lower()
+    u_ans4 = ans4.strip().lower()
+
+    # ตรวจข้อ 3
+    if u_ans1 == "lemon":
+        st.success("✅ ข้อ 3: ถูกต้อง")
+        score += 1
+    else:
+        st.error(f"❌ ข้อ 3: ยังไม่ถูกต้อง (คุณตอบ '{u_ans3}')")
+
+    # ตรวจข้อ 4
+    if u_ans2 == "glasses":
+        st.success("✅ ข้อ 4: ถูกต้อง")
+        score += 1
+    else:
+        st.error(f"❌ ข้อ 4: ยังไม่ถูกต้อง (คุณตอบ '{u_ans4}')")
     st.info(f"🏆 ได้คะแนนรวม: {score} คะแนน")
 
-    if score == 2:
+    if score == 4:
         st.success("🎉 You win!")
     else:
         st.error("💀 You lose!")
-
 
 # ----------------------------------------------------
 # 1. ปุ่มเริ่มเล่นเกม
@@ -85,6 +113,18 @@ st.session_state.ans2_val = ans2
 
 # ✏️ [พื้นที่สำหรับนักเรียน]: เพิ่มข้อ 3, 4 ตรงนี้
 
+ans1 = st.text_input(
+    "ข้อ 3: A `l _ m _ n` a day keeps the boring days away. 🍋",
+    value=st.session_state.ans3_val,
+)
+ans2 = st.text_input(
+    "ข้อ 4: A g _ a _ s e _ a day keeps the blurry days away. 👓 ",
+    value=st.session_state.ans4_val,
+)
+
+# อัปเดตค่าล่าสุดเข้าตัวแปร
+st.session_state.ans3_val = ans3
+st.session_state.ans4_val = ans4
 
 # 4. ปุ่มส่งคำตอบ
 if "start" in st.session_state and not st.session_state.get("is_ended", False):
@@ -97,7 +137,7 @@ if "start" in st.session_state and not st.session_state.get("is_ended", False):
 
 # 5. แสดง Dialog ผลลัพธ์
 if st.session_state.get("is_ended", False):
-    show_result_dialog(ans1, ans2)
+    show_result_dialog(ans1, ans2, ans3, ans4)
 
 st.divider()
-st.write("นางสาวนันท์ลภัส จำต๊ะ เลขที่ 30 ม.4/13")
+st.write("นางสาวนันท์ลภัส จำต๊ะ เลขที่ 31 ม.4/13")
